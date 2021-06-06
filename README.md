@@ -3,6 +3,9 @@
 
 Mal is a Clojure inspired Lisp interpreter. Currently, this repository contains a REPL that implements most features of the Mal language. 
 
+![Build](https://github.com/evansmal/mal/actions/workflows/main.yml/badge.svg)
+
+
 ## Getting Started
 
 Start by cloning the repository and installing the dependencies:
