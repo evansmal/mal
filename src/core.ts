@@ -1,5 +1,5 @@
 import { SymbolTable } from "./env.js";
-import { List, True, False, Nil, Number, DataType, Applicable, createFunction } from "./types.js";
+import { List, True, False, Nil, Number, DataType, Applicable, Function } from "./types.js";
 import { printString } from "./printer.js";
 
 function createBinaryOperand(expr: (a: Number, b: Number) => Number): Applicable {
@@ -73,18 +73,18 @@ const gt = createComparator((a, b) => { return (a > b); });
 const gte = createComparator((a, b) => { return (a >= b); });
 
 export const ns: SymbolTable = {
-    "+": createFunction(add),
-    "-": createFunction(subtract),
-    "*": createFunction(multiply),
-    "/": createFunction(divide),
-    "prn": createFunction(print),
-    "list": createFunction(list),
-    "list?": createFunction(is_list),
-    "empty?": createFunction(is_empty),
-    "count": createFunction(count),
-    "=": createFunction(compare),
-    "<": createFunction(lt),
-    "<=": createFunction(lte),
-    ">": createFunction(gt),
-    ">=": createFunction(gte)
+    "+": Function(add),
+    "-": Function(subtract),
+    "*": Function(multiply),
+    "/": Function(divide),
+    "prn": Function(print),
+    "list": Function(list),
+    "list?": Function(is_list),
+    "empty?": Function(is_empty),
+    "count": Function(count),
+    "=": Function(compare),
+    "<": Function(lt),
+    "<=": Function(lte),
+    ">": Function(gt),
+    ">=": Function(gte)
 }

@@ -2,6 +2,7 @@
     "license": "MIT",
     "scripts": {
         "build": "tsc",
+        "clean": "rm -rf build",
         "repl": "node build/index.js"
     },
     "type": "module",

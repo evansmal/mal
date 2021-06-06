@@ -10,7 +10,7 @@ export interface Environment {
     getTable: () => SymbolTable;
 }
 
-export function createEnvironment(binds: Symbol[], exprs: DataType[], outer?: Environment) {
+export function Environment(binds: Symbol[], exprs: DataType[], outer?: Environment) {
 
     const symbols: SymbolTable = {};
 

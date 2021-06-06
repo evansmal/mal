@@ -62,7 +62,7 @@ export interface Function {
     apply: Applicable;
 }
 
-export function createFunction(fn: (...args: DataType[]) => DataType): Function {
+export function Function(fn: (...args: DataType[]) => DataType): Function {
     return { kind: "Function", apply: fn };
 }
 

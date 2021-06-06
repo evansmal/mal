@@ -1,10 +1,10 @@
 import * as readline from "readline";
 
-import { DataType, Function, List, Nil, toSymbols } from "./types.js";
-import { createEnvironment, Environment } from "./env.js"
 import { ns } from "./core.js"
 import { readString } from "./reader.js";
 import { printString } from "./printer.js";
+import { DataType, Function, List, Nil, toSymbols } from "./types.js";
+import { Environment } from "./env.js"
 
 
 function read(input: string): DataType {
@@ -22,21 +22,19 @@ function evaluateAST(input: DataType, env: Environment): DataType {
             if (lookup) return lookup;
             else throw new Error(`Unexpected symbol: ${input.value}`);
         }
-        default: {
-            return input;
-        }
+        default: { return input; }
 
     }
 }
 
-function evaluateDefinition(ast: List, env: Environment) {
+function evaluateDefinition(ast: List, env: Environment): DataType {
     const [_, key, value] = ast.values;
     if (key.kind !== "Symbol") throw new Error("def! key is excepted to be symbol");
     return env.setValue(key.value, value);
 }
 
-function evaluateLet(ast: List, env: Environment) {
-    const new_environment = createEnvironment([], [], env);
+function evaluateLet(ast: List, env: Environment): DataType {
+    const new_environment = Environment([], [], env);
     const pairs = ast.values[1];
     if (pairs.kind !== "List") throw new Error("invalid bind");
 
@@ -51,12 +49,12 @@ function evaluateLet(ast: List, env: Environment) {
     return evaluateAST(ast.values[2], new_environment);
 }
 
-function evaluateDo(ast: List, env: Environment) {
+function evaluateDo(ast: List, env: Environment): DataType {
     const values = ast.values.slice(1, -1);
     return values.map(value => evaluateAST(value, env))[values.length - 1];
 }
 
-function evaluateIf(ast: List, env: Environment) {
+function evaluateIf(ast: List, env: Environment): DataType {
     const condition = evaluateAST(ast.values[1], env);
     if (condition.kind === "True") return evaluateAST(ast.values[2], env);
     else if (condition.kind === "False") {
@@ -67,17 +65,12 @@ function evaluateIf(ast: List, env: Environment) {
 
 function evaluateFn(ast: List, env: Environment): Function {
     const [, args, binds] = ast.values;
-
     if (args.kind !== "List") throw new Error(`Expected argument list for function def`);
     const symbols = toSymbols(args);
-
-    return {
-        kind: "Function",
-        apply: (...args: DataType[]) => {
-            const new_environment = createEnvironment(symbols, args, env);
-            return evaluate(binds, new_environment);
-        }
-    };
+    return Function((...args: DataType[]) => {
+        const new_environment = Environment(symbols, args, env);
+        return evaluate(binds, new_environment);
+    });
 }
 
 function evaluate(input: DataType, env: Environment): DataType {
@@ -127,7 +120,7 @@ async function main() {
         output: process.stdout
     });
 
-    const default_env = createEnvironment([], []);
+    const default_env = Environment([], []);
     default_env.addSymbols(ns);
     while (true) { const input = await getInput(rl); rep(input, default_env); }
 }
