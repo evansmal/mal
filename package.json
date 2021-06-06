@@ -1,6 +1,8 @@
 {
+    "license": "MIT",
     "scripts": {
-        "build": "tsc"
+        "build": "tsc",
+        "repl": "node build/index.js"
     },
     "type": "module",
     "devDependencies": {
