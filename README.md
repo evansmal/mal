@@ -24,3 +24,13 @@ Run the REPL:
 yarn repl
 $ user> 
 ```
+
+Try out a few examples:
+
+```
+$ user> (prn (+ 2 (* 6 5)))
+32
+
+$ user> (prn ((fn* (a) (+ a 1)) 10))
+11
+```
