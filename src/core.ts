@@ -1,6 +1,9 @@
 import { SymbolTable } from "./env.js";
-import { List, True, False, Nil, Number, DataType, Applicable, Function } from "./types.js";
+import { List, True, False, Nil, String, Number, DataType, Applicable, Function } from "./types.js";
 import { printString } from "./printer.js";
+import { readString } from "./reader.js";
+
+import { readFileSync } from "fs";
 
 function createBinaryOperand(expr: (a: Number, b: Number) => Number): Applicable {
     return (a: DataType, b: DataType) => {
@@ -72,6 +75,16 @@ const lte = createComparator((a, b) => { return (a <= b); });
 const gt = createComparator((a, b) => { return (a > b); });
 const gte = createComparator((a, b) => { return (a >= b); });
 
+const read_str = (...args: DataType[]) => {
+    if (args.length !== 0 || args[0].kind !== "String") throw new Error("Cannot read_str with non-string values");
+    return readString(args[0].value);
+}
+
+const slurp = (...args: DataType[]) => {
+    if (args.length !== 0 || args[0].kind !== "String") throw new Error("Cannot slurp with non-string values");
+    return readFileSync(args[0].value).toString();
+}
+
 export const ns: SymbolTable = {
     "+": Function(add),
     "-": Function(subtract),
@@ -86,5 +99,7 @@ export const ns: SymbolTable = {
     "<": Function(lt),
     "<=": Function(lte),
     ">": Function(gt),
-    ">=": Function(gte)
+    ">=": Function(gte),
+    "read-string": Function(read_str),
+    "slurp": Function(slurp)
 }

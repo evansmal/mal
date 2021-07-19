@@ -122,6 +122,12 @@ async function main() {
 
     const default_env = Environment([], []);
     default_env.addSymbols(ns);
+
+    const eval_fn = (...args: DataType[]) => { return evaluate(args[0], default_env); };
+    default_env.addSymbols({ "eval": Function(eval_fn) });
+
+    rep("(def! load-file (fn* f (eval (read-string (str \"(do \" (slurp f) \"\nnil)\")))))", default_env);
+
     while (true) { const input = await getInput(rl); rep(input, default_env); }
 }
 
