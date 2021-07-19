@@ -26,7 +26,12 @@ export interface Nil {
     kind: "Nil";
 }
 
-export type Atom = Number | Symbol | True | False | Nil;
+export interface String {
+    kind: "String";
+    value: string
+}
+
+export type Atom = Number | Symbol | True | False | Nil | String;
 
 export function Number(value: number): Number {
     return { kind: "Number", value };
@@ -53,6 +58,13 @@ export function False(): False {
 
 export function Nil(): Nil {
     return { kind: "Nil" };
+}
+
+export function String(value: string): String {
+    return {
+        kind: "String",
+        value: value.replace(/['"]+/g, '')
+    };
 }
 
 export type Applicable = (...args: DataType[]) => DataType;

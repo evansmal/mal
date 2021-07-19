@@ -1,4 +1,4 @@
-import { DataType, Atom, Symbol, Number, True, False, Nil, List } from "./types.js";
+import { DataType, Atom, Symbol, Number, String, True, False, Nil, List } from "./types.js";
 
 interface Reader {
     peek: () => Token;
@@ -56,11 +56,16 @@ function isNil(value: string) {
     return (value === "nil");
 }
 
+function isString(value: string) {
+    return (value[0] === "\'" || value[0] === "\"");
+}
+
 function readAtom(reader: Reader): Atom {
     const token = reader.next();
     if (isNumber(token)) return { kind: "Number", value: parseFloat(token) }
     else if (isBoolean(token)) return (token === "true" ? True() : False());
     else if (isNil(token)) return Nil();
+    else if (isString(token)) return String(token);
     else return { kind: "Symbol", value: token };
 }
 
