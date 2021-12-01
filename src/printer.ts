@@ -9,6 +9,7 @@ export function printString(node: DataType): string {
         case "True": return `true`;
         case "False": return `false`;
         case "Nil": return `nul`;
+        case "String": throw new Error("Unimplemented");
         default: {
             const _: never = node;
             return `unk_${_}`;

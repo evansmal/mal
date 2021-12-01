@@ -82,7 +82,7 @@ const read_str = (...args: DataType[]) => {
 
 const slurp = (...args: DataType[]) => {
     if (args.length !== 0 || args[0].kind !== "String") throw new Error("Cannot slurp with non-string values");
-    return readFileSync(args[0].value).toString();
+    return String(readFileSync(args[0].value).toString());
 }
 
 export const ns: SymbolTable = {
